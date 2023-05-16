@@ -1,4 +1,4 @@
-package com.koreait.commons.validator;
+package com.koreait.commons.validators;
 
 public interface MobileValidator {
     default boolean mobileNumCheck(String mobile){
