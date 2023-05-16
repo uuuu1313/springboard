@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 public class SiteConfigInterceptor implements HandlerInterceptor {
 
-    @Override
+    @Override // 공통 기능 + 제어, 인증, 인가
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         request.setAttribute("cssJsVersion", 1);

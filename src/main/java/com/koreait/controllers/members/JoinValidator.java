@@ -1,5 +1,6 @@
 package com.koreait.controllers.members;
 
+import com.koreait.commons.validator.MobileValidator;
 import com.koreait.repositories.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class JoinValidator implements Validator {
+public class JoinValidator implements Validator, MobileValidator {
 
     private final MemberRepository memberRepository;
 
@@ -28,5 +29,23 @@ public class JoinValidator implements Validator {
          *  6. 필수 약관 동의 체크
          */
         JoinForm joinForm = (JoinForm) target;
+        String userId = joinForm.getUserId();
+        String userPw = joinForm.getUserPw();
+        String userPwRe = joinForm.getUserPwRe();
+        String mobile = joinForm.getMobile();
+
+        // 1. 아이디 중복 여부
+        if (userId != null && !userId.isBlank() && memberRepository.exists(userId)) {
+            errors.rejectValue("userId", "Validation.duplicate.userId");
+        }
+
+
+        // 3. 비밀번호와 비밀번호 확인 일치 여부
+        if (userPw != null && !userPw.isBlank()
+         && userPwRe!= null && !userPwRe.isBlank() && !userPw.equals(userPwRe)){
+            errors.reject("userPwRe", "Validation.incorrect.userPwRe");
+        }
+
+        // 4. 모바일 형식
     }
 }
