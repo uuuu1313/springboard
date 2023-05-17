@@ -15,3 +15,8 @@
 * 관리자 페이지
     - 기본 설정
     - 게시판 설정
+
+## 3일차
+    - 로그인 양식
+    - UserDetails, UserDetailsService 인터페이스 구현 클래스
+    
