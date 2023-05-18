@@ -1,5 +1,6 @@
 package com.koreait.models.member;
 
+import com.koreait.commons.constants.Role;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ public class MemberInfo implements UserDetails {
     private String userNm;
     private String email;
     private String mobile;
+    private Role rolse;
 
     private Collection<GrantedAuthority> authorities;
 

@@ -33,6 +33,7 @@ public class MemberInfoService implements UserDetailsService {
                 .userId(member.getUserId())
                 .userPw(member.getUserPw())
                 .userNm(member.getUserNm())
+                .rolse(member.getRoles())
                 .authorities(authorities)
                 .build();
     }
