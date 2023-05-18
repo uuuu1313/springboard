@@ -36,7 +36,7 @@ public class SecurityConfig {
         // 권한별 인증
         http.authorizeHttpRequests()
                 .requestMatchers("/mypage/**").authenticated() // 회원 전용
-                .requestMatchers("/admin/**").hasAuthority("ADMIN") // 관리자 전용
+//                .requestMatchers("/admin/**").hasAuthority("ADMIN") // 관리자 전용, 작업시는 주석 처리 후 작업
                 .anyRequest().permitAll(); // 외에 모든 페이지는 모든 회원이 접근 가능
 
         http.exceptionHandling()
