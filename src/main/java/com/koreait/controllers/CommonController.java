@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice("com.koreait.controllers")
 public class CommonController {
 
-    @ExceptionHandler(Exception.class)
+    // ControllerAdvice 지정 범위 이내 전역에서
+    @ExceptionHandler(Exception.class) // <= Exception.class 타입의 에러가 발생하면 해당 메서드 실행 됨
     public String errorHandler(Exception e, Model model, HttpServletRequest request, HttpServletResponse response){
         int status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 

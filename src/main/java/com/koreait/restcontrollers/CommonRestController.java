@@ -25,6 +25,7 @@ public class CommonRestController {
                 .build();
 
         return ResponseEntity.status(status).body(jsonData);
-
+        //ResponseEntity .status = 지정된 http 상태 코드 생성
+        // .body(T body) = 지정된 본문 데이터 생성
     }
 }
