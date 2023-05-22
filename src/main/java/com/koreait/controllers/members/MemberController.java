@@ -21,13 +21,13 @@ public class MemberController {
 
     @GetMapping("/join")
     public String join(@ModelAttribute JoinForm joinForm, Model model){
-
+        commonProcess(model);
         return "member/join";
     }
 
     @PostMapping("/join")
-    public String joinPs(@Valid JoinForm joinForm, Errors errors){
-
+    public String joinPs(@Valid JoinForm joinForm, Errors errors, Model model){
+        commonProcess(model);
         joinValidator.validate(joinForm, errors);
 
         if (errors.hasErrors()){
@@ -43,5 +43,9 @@ public class MemberController {
     public String login() {
 
         return "member/login";
+    }
+
+    private void commonProcess(Model model){
+        model.addAttribute("pageTitle", "회원가입");
     }
 }
