@@ -57,6 +57,10 @@ public class BoardConfigInfoService {
             role = board.getViewAccessRole();
         } else if (location.equals("write")) { // 게시글 쓰기 권한
             role = board.getWriteAccessRole();
+
+            /** 비회원 게시글 여부 */
+            if (!memberUtil.isLogin()) board.setGuest(true);
+
         } else if (location.equals("reply")) { // 답글 권한
             role = board.getReplyAccessRole();
         } else if (location.equals("comment")) { // 댓글 권한
@@ -67,5 +71,7 @@ public class BoardConfigInfoService {
             || role == Role.ADMIN && !memberUtil.isAdmin()) {
             throw new BoardNotAllowAccessException();
         }
+
+
     }
 }
