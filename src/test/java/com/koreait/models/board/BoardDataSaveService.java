@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BoardDataSaveService {
 
-    public void save(BoardForm boardForm){
+    private final BoardValidator validator;
 
+    public void save(BoardForm boardForm){
+        validator.check(boardForm);
     }
 }

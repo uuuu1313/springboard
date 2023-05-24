@@ -11,7 +11,8 @@ public class BoardData extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private String bId;
+    @JoinColumn(name="bId")
+    private Board board;
 
     private String gid;
     private String poster; // 작성자

@@ -24,7 +24,7 @@ public class QBoardData extends EntityPathBase<BoardData> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final StringPath bId = createString("bId");
+    public final QBoard board;
 
     public final StringPath category = createString("category");
 
@@ -74,6 +74,7 @@ public class QBoardData extends EntityPathBase<BoardData> {
 
     public QBoardData(Class<? extends BoardData> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.board = inits.isInitialized("board") ? new QBoard(forProperty("board")) : null;
         this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
     }
 
