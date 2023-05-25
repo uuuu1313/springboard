@@ -1,13 +1,17 @@
 package com.koreait.controllers.boards;
 
 import com.koreait.commons.CommonException;
+import com.koreait.commons.MemberUtil;
 import com.koreait.entities.Board;
+import com.koreait.models.board.BoardDataSaveService;
 import com.koreait.models.board.config.BoardConfigInfoService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +23,13 @@ import java.util.List;
 public class BoardController {
 
     private final BoardConfigInfoService boardConfigInfoService;
+    private final BoardDataSaveService saveService;
+    private final BoardFormValidator formValidator;
+    private final HttpServletResponse response;
+    private final MemberUtil memberUtil;
+
+    private Board board; // 게시판 설정
+
 
     /**
      * 게시글 목록
@@ -38,8 +49,14 @@ public class BoardController {
      * @return
      */
     @GetMapping("/write/{bId}")
-    public String write(@PathVariable String bId, Model model){
+    public String write(@PathVariable String bId, @ModelAttribute BoardForm boardForm, Model model){
         commonProcess(bId, "write", model);
+        boardForm.setBId(bId);
+
+        if (memberUtil.isLogin()){
+            boardForm.setPoster(memberUtil.getMember().getUserNm());
+        }
+
 
         return "board/write";
     }
@@ -50,7 +67,7 @@ public class BoardController {
      * @return
      */
     @GetMapping("/{id}/update")
-    public String update(@PathVariable Long id, Model model) {
+    public String update(@PathVariable Long id, @ModelAttribute BoardForm boardForm, Model model) {
 
         commonProcess(null, "update", model);
 
@@ -58,10 +75,25 @@ public class BoardController {
     }
 
     @PostMapping("/save")
-    public String save(Model model){
-//        commonProcess(bId, "write", model);
+    public String save(@Valid BoardForm boardForm, Errors errors, Model model){
+        Long id = boardForm.getId();
+        String mode = id == null ? "write" : "update";
+        commonProcess(boardForm.getBId(), mode, model);
 
-        return null;
+        formValidator.validate(boardForm, errors);
+
+        if (errors.hasErrors()){
+            return "board/" + mode;
+        }
+
+        saveService.save(boardForm);
+
+        // 작성 후 이동 설정 - 목록, 글보기
+        String location = board.getLocationAfterWriting();
+        String url = "redirect:/board/";
+        url += location.equals("view")  ? "view/" + boardForm.getId() : "list/" + boardForm.getBId();
+
+        return url;
     }
 
     @GetMapping("/view/{id}")
@@ -84,7 +116,7 @@ public class BoardController {
          *                     - 관리자는 다 가능
          */
 
-        Board board = boardConfigInfoService.get(bId, action);
+        board = boardConfigInfoService.get(bId, action);
         List<String> addCss = new ArrayList<>();
         List<String> addScript = new ArrayList<>();
 
@@ -107,7 +139,7 @@ public class BoardController {
     }
 
     @ExceptionHandler(CommonException.class)
-    public String errorHandler(CommonException e, Model model, HttpServletResponse response) {
+    public String errorHandler(CommonException e, Model model) {
         e.printStackTrace();
 
         String message = e.getMessage();

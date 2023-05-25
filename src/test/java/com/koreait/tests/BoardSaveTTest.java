@@ -1,3 +1,5 @@
+package com.koreait.tests;
+
 import com.koreait.commons.configs.ConfigSaveService;
 import com.koreait.controllers.admins.ConfigForm;
 import com.koreait.controllers.boards.BoardForm;
@@ -8,7 +10,6 @@ import com.koreait.models.board.BoardValidationException;
 import com.koreait.models.board.config.BoardConfigInfoService;
 import com.koreait.models.board.config.BoardConfigSaveService;
 import com.koreait.models.member.MemberSaveService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -18,15 +19,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,8 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @TestPropertySource(locations="classpath:application-test.properties")
 @DisplayName("게시글 등록, 수정 테스트")
 @Transactional
-public class BoardSaveTests {
-
+public class BoardSaveTTest {
     @Autowired
     private BoardDataSaveService saveService;
 
@@ -234,8 +233,8 @@ public class BoardSaveTests {
     void requiredFieldsGuestControllerTest() throws Exception {
         BoardForm boardForm = getGuestBoardForm();
         mockMvc.perform(post("/board/save")
-                .param("bId", boardForm.getBId())
-                .param("gid", boardForm.getGid())
+                        .param("bId", boardForm.getBId())
+                        .param("gid", boardForm.getGid())
                         .with(csrf().asHeader()))
                 .andDo(print());
     }
