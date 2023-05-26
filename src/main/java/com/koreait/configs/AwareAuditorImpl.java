@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AwareAuditorImpl implements AuditorAware<String> {
+public class  AwareAuditorImpl implements AuditorAware<String> {
 
     private final MemberUtil memberUtil;
     @Override

@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/admin/style.css?v={v}(v=${@siteConf.get('cssJsVersion')})}">
     <link rel="stylesheet" type="text/css" th:each="file : ${addCss}" th:href="@{/css/admin/{cssFile}.css?v={v}(@siteConf.get('cssFile')=${file}, v=${cssJsVersion})}">
+    <th:block layout:fragment="addCss"></th:block>
 
     <!--작업 시 파일 변경시마다 갱신하면서 버전을 표시해줄 수 있게 버전 추가( style, 스크립트 ) + DB에서 관리할 수 있게 추가 설정 필요-->
 
-    <th:block layout:fragment="addCss"></th:block>
     <script th:src="@{/js/admin/common.js?v={v}(v=${@siteConf.get('cssJsVersion')})}"></script>
     <script th:each="jsFile : ${addScript}" th:href="@{/js/admin/{jsFile}.js?v={v}(jsFile=${jsFile}, v=${@siteConf.get('cssJsVersion')})}"></script>
     <th:block layout:fragment="addScript"></th:block>
